@@ -1,10 +1,6 @@
 import _ from "lodash";
 import Vue from "vue";
 
-Vue.deepGet = _deepGet;
-Vue.deepSet = _deepSet;
-Vue.deepDelete = _deepDelete;
-
 const mixin = {
   __DEEP_V_MODAL_CACHE__: {},
 
@@ -97,6 +93,11 @@ function _deepDelete(obj, path) {
 
   Vue.delete(obj, lastKey);
 }
+
+// add to global
+Vue.deepGet = _deepGet;
+Vue.deepSet = _deepSet;
+Vue.deepDelete = _deepDelete;
 
 export default (Vue) => Vue.mixin(mixin);
 export const vueDeepMixin = mixin;
