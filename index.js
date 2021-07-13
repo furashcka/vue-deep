@@ -99,7 +99,7 @@ Vue.deepGet = _deepGet;
 Vue.deepSet = _deepSet;
 Vue.deepDelete = _deepDelete;
 
-export default (Vue) => Vue.mixin(mixin);
+export default { install: (Vue) => Vue.mixin(mixin) };
 export const vueDeepMixin = mixin;
 export const deepGet = _deepGet;
 export const deepSet = _deepSet;
