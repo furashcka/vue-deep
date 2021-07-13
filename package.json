@@ -1,0 +1,13 @@
+{
+  "name": "vue-deep",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "dependencies": {
+    "lodash": "^4.17.20",
+    "vue": "^2.6.11"
+  },
+  "author": "furashcka",
+  "license": "MIT"
+}
