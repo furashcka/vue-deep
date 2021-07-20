@@ -2,7 +2,7 @@ import _ from "lodash";
 import Vue from "vue";
 
 const mixin = {
-  __DEEP_V_MODAL_CACHE__: {},
+  __DEEP_MODEL_CACHE__: {},
 
   methods: {
     $deepGet() {
@@ -24,7 +24,7 @@ const mixin = {
     },
 
     $deepModel(path) {
-      let cache = this.$options.__DEEP_V_MODAL_CACHE__;
+      let cache = this.$options.__DEEP_MODEL_CACHE__;
 
       if (cache[path]) return cache[path];
 
@@ -99,6 +99,7 @@ Vue.deepGet = _deepGet;
 Vue.deepSet = _deepSet;
 Vue.deepDelete = _deepDelete;
 
+// for Vue.use()
 export default { install: (Vue) => Vue.mixin(mixin) };
 export const vueDeepMixin = mixin;
 export const deepGet = _deepGet;
