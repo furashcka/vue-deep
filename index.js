@@ -43,9 +43,10 @@ const mixin = {
 
 function _isReactive(obj, key) {
   let property = Object.getOwnPropertyDescriptor(obj, key);
-  let gettter = _.get(property, "get.name", "");
+  let gettter = _.get(property, "get");
+  let settter = _.get(property, "set");
 
-  return gettter == "proxyGetter" || gettter == "reactiveGetter";
+  return _.isFunction(gettter) && _.isFunction(settter) && _.has(obj, "__ob__");
 }
 
 function _getArgs(_arguments, $data) {
