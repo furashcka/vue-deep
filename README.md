@@ -165,7 +165,7 @@ export const actions = {
 
 export const mutations = {
   setState(state, newState) {
-    _.each(newState, (val, key) => deepSet(state, key, val));
+    _.each(newState, (val, path) => deepSet(state, path, val));
   },
 
   deleteState(state, path) {
