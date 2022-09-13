@@ -1,6 +1,6 @@
 {
   "name": "vue-deep",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {},
@@ -9,5 +9,9 @@
     "vue": "^2.6.11"
   },
   "author": "furashcka",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/furashcka/vue-deep/issues"
+  },
+  "homepage": "https://furashcka.github.io/vue-deep/"
 }
