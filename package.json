@@ -4,14 +4,36 @@
   "description": "Tiny vue.js library to initialize deep objects without losing reactivity",
   "main": "index.js",
   "scripts": {},
-  "dependencies": {
-    "lodash": "^4.17.20",
-    "vue": "^2.6.11"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/furashcka/vue-deep.git"
   },
-  "author": "furashcka",
+  "keywords": [
+    "vue",
+    "vue.js",
+    "reactive",
+    "deep",
+    "set",
+    "vuex",
+    "model",
+    "v-model",
+    "binding",
+    "dynamic",
+    "nested",
+    "paths",
+    "path",
+    "store",
+    "form",
+    "mutation"
+  ],
+  "author": "Evgeny Krylov furashcka@gmail.com",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/furashcka/vue-deep/issues"
   },
-  "homepage": "https://furashcka.github.io/vue-deep/"
+  "homepage": "https://furashcka.github.io/vue-deep/",
+  "dependencies": {
+    "lodash": "^4.17.20",
+    "vue": "^2.6.11"
+  }
 }
