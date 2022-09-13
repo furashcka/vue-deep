@@ -1,6 +1,6 @@
 {
   "name": "vue-deep",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Tiny vue.js library to initialize deep objects without losing reactivity",
   "main": "index.js",
   "scripts": {},
