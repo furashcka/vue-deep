@@ -1,36 +1,29 @@
 import _ from "lodash";
-import Vue from "vue";
 
-const mixin = {
+const vueDeepMixin = {
   __DEEP_MODEL_CACHE__: {},
 
   methods: {
-    $deepGet() {
-      let args = _getArgs(arguments, this.$data);
-
-      return _deepGet(args.obj, args.path, args.data);
+    $deepGet(path, defaultValue) {
+      return _.get(this, path, defaultValue);
     },
 
-    $deepSet() {
-      let args = _getArgs(arguments, this.$data);
-
-      _deepSet(args.obj, args.path, args.data);
+    $deepSet(path, value) {
+      deepSetWith(this, path, value, this.$set);
     },
 
-    $deepDelete() {
-      let args = _getArgs(arguments, this.$data);
-
-      _deepDelete(args.obj, args.path);
+    $deepDelete(path) {
+      deepDeleteWith(this, path, this.$delete);
     },
 
     $deepModel(path) {
-      let cache = this.$options.__DEEP_MODEL_CACHE__;
+      const cache = this.$options.__DEEP_MODEL_CACHE__;
 
       if (cache[path]) return cache[path];
 
-      let model = {
+      const model = {
         get: () => this.$deepGet(path),
-        set: (data) => this.$deepSet(path, data),
+        set: (value) => this.$deepSet(path, value),
       };
 
       return (cache[path] = Object.create(null, {
@@ -39,70 +32,63 @@ const mixin = {
       }));
     },
   },
+
+  beforeDestroy() {
+    delete this.$options.__DEEP_MODEL_CACHE__;
+  },
 };
 
-function _isReactive(obj, key) {
-  let property = Object.getOwnPropertyDescriptor(obj, key);
-  let gettter = _.get(property, "get");
-  let settter = _.get(property, "set");
+function deepSetWith(object, path, value, setter) {
+  if (!_.isObject(object)) return object;
+  if (!_.isFunction(setter)) setter = () => {};
 
-  return _.isFunction(gettter) && _.isFunction(settter) && _.has(obj, "__ob__");
-}
+  const keys = _.toPath(path);
+  const lastIndex = _.size(keys) - 1;
+  let nsObject = object;
 
-function _getArgs(_arguments, $data) {
-  let args = _arguments;
+  for (let i = 0; i < lastIndex; i++) {
+    const key = keys[i];
 
-  if (_.size(args) === 3) {
-    return {
-      obj: args[0],
-      path: args[1],
-      data: args[2],
-    };
-  }
-
-  return {
-    obj: $data,
-    path: args[0],
-    data: args[1],
-  };
-}
-
-function _deepGet(obj, path, defaultData) {
-  return _.get(obj, path, defaultData);
-}
-
-function _deepSet(obj, path, data) {
-  let keys = _.toPath(path);
-  let lastKey = _.last(keys);
-
-  _.each(_.slice(keys, 0, -1), (key) => {
-    if (!_isReactive(obj, key)) {
-      Vue.set(obj, key, {});
+    if (_.has(nsObject, key)) {
+      nsObject = nsObject[key];
+      continue;
     }
 
-    obj = obj[key];
-  });
+    const nextKey = keys[i + 1];
 
-  Vue.set(obj, lastKey, data);
+    setter(nsObject, key, _isIndex(nextKey) ? [] : {});
+    nsObject = nsObject[key];
+    break;
+  }
+
+  setter(nsObject, keys[lastIndex], value);
+  return object;
 }
 
-function _deepDelete(obj, path) {
-  let keys = _.toPath(path);
-  let lastKey = _.last(keys);
+function deepDeleteWith(object, path, deleter) {
+  if (!_.isObject(object)) return;
+  if (!_.isFunction(deleter)) deleter = () => {};
 
-  _.each(_.slice(keys, 0, -1), (key) => (obj = obj[key] || {}));
+  const keys = _.toPath(path);
+  const lastIndex = _.size(keys) - 1;
+  let nsObject = object;
 
-  Vue.delete(obj, lastKey);
+  for (let i = 0; i < lastIndex; i++) {
+    const key = keys[i];
+
+    if (!_.has(nsObject, key)) {
+      nsObject = {};
+      break;
+    }
+
+    nsObject = nsObject[key];
+  }
+
+  deleter(nsObject, keys[lastIndex]);
 }
 
-// add to global
-Vue.deepGet = _deepGet;
-Vue.deepSet = _deepSet;
-Vue.deepDelete = _deepDelete;
+function _isIndex(value) {
+  return _.isFinite(+value) && value > -1 && value < Number.MAX_SAFE_INTEGER;
+}
 
-// for Vue.use()
-export default { install: (Vue) => Vue.mixin(mixin) };
-export const vueDeepMixin = mixin;
-export const deepGet = _deepGet;
-export const deepSet = _deepSet;
-export const deepDelete = _deepDelete;
+export { vueDeepMixin, deepSetWith, deepDeleteWith };
