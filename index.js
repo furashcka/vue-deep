@@ -88,7 +88,12 @@ function deepDeleteWith(object, path, deleter) {
 }
 
 function _isIndex(value) {
-  return _.isFinite(+value) && value > -1 && value < Number.MAX_SAFE_INTEGER;
+  return (
+    !_.isEmpty(value) &&
+    _.isFinite(+value) &&
+    value > -1 &&
+    value < Number.MAX_SAFE_INTEGER
+  );
 }
 
 export { vueDeepMixin, deepSetWith, deepDeleteWith };
