@@ -49,16 +49,12 @@ function deepSetWith(object, path, value, setter) {
   for (let i = 0; i < lastIndex; i++) {
     const key = keys[i];
 
-    if (_.has(nsObject, key)) {
-      nsObject = nsObject[key];
-      continue;
+    if (!_.has(nsObject, key)) {
+      const nextKey = keys[i + 1];
+      setter(nsObject, key, _isIndex(nextKey) ? [] : {});
     }
 
-    const nextKey = keys[i + 1];
-
-    setter(nsObject, key, _isIndex(nextKey) ? [] : {});
     nsObject = nsObject[key];
-    break;
   }
 
   setter(nsObject, keys[lastIndex], value);
