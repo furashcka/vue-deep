@@ -18,19 +18,9 @@ yarn add vue-deep
 
 # How use
 
-Register globally
-
-```javascript
-import vueDeep from "vue-deep";
-
-Vue.use(vueDeep);
-```
-
 Register locally
 
 ```javascript
-import vueDeep from "vue-deep";
-
 import { vueDeepMixin } from "vue-deep";
 
 // Options API
@@ -138,7 +128,8 @@ Bindings form input by path.
 ```javascript
 import _ from "lodash";
 import axios from "axios";
-import { deepGet, deepSet, deepDelete } from "vue-deep";
+import Vue from "vue";
+import { deepGet, deepSetWith, deepDeleteWith } from "vue-deep";
 
 export const state = () => ({
   authors: {},
@@ -148,7 +139,7 @@ export const getters = {};
 
 export const actions = {
   async fetchBooks({ state, commit }) {
-    const res = await axios.get("api/books/get");
+    const res = await axios.get("https://example.com/api/books/get");
 
     _.each(res.data, (book) => {
       if (!book.isTop) return;
@@ -165,11 +156,11 @@ export const actions = {
 
 export const mutations = {
   setState(state, newState) {
-    _.each(newState, (val, path) => deepSet(state, path, val));
+    _.each(newState, (val, path) => deepSetWith(state, path, val, Vue.set));
   },
 
   deleteState(state, path) {
-    deepDelete(state, path);
+    deepDeleteWith(state, path, Vue.delete);
   },
 };
 ```
