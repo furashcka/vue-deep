@@ -2,6 +2,10 @@
 
 vue-deep allows you to initialize objects of any depth without loss of reactivity, the library is an extension of the standard $set and $delete methods, which is why such a small weight and no bugs. You can use library in vuex or vue files.
 
+# Watch demo
+
+[https://furashcka.github.io/vue-deep/#demo](https://furashcka.github.io/vue-deep/#demo)
+
 # Installation
 
 Install via NPM
