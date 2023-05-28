@@ -1,4 +1,24 @@
-import _ from "lodash";
+import {
+  get,
+  isObject,
+  isFunction,
+  toPath,
+  size,
+  has,
+  isEmpty,
+  isFinite,
+} from "lodash";
+
+const _ = {
+  get,
+  isObject,
+  isFunction,
+  toPath,
+  size,
+  has,
+  isEmpty,
+  isFinite,
+};
 
 const vueDeepMixin = {
   __DEEP_MODEL_CACHE__: {},
