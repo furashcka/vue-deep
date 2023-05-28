@@ -25,7 +25,7 @@ const vueDeepMixin = {
 
   methods: {
     $deepGet(path, defaultValue) {
-      return _.get(this, path, defaultValue);
+      return deepGet(this, path, defaultValue);
     },
 
     $deepSet(path, value) {
@@ -57,6 +57,10 @@ const vueDeepMixin = {
     delete this.$options.__DEEP_MODEL_CACHE__;
   },
 };
+
+function deepGet(object, path, defaultValue) {
+  return _.get(object, path, defaultValue);
+}
 
 function deepSetWith(object, path, value, setter) {
   if (!_.isObject(object)) return object;
@@ -112,4 +116,4 @@ function _isIndex(value) {
   );
 }
 
-export { vueDeepMixin, deepSetWith, deepDeleteWith };
+export { vueDeepMixin, deepGet, deepSetWith, deepDeleteWith };
